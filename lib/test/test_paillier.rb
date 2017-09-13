@@ -15,7 +15,7 @@ class TestPaillier < Test::Unit::TestCase #:nodoc:
 		# the tests. To pull this off we use a module variable.
 		unless( defined?(@@priv) and defined?(@@pub) )
 			puts "Generating keypair..."
-			(@@priv, @@pub) = Paillier.generateKeypair(Paillier::KeySize)
+			(@@priv, @@pub) = Paillier.generateKeypair(2048)
 		end
 	end
 
@@ -25,6 +25,14 @@ class TestPaillier < Test::Unit::TestCase #:nodoc:
 		dx = Paillier.decrypt(@@priv, @@pub, cx)
 		assert_not_equal(x, cx)
 		assert_equal(x, dx)
+	end
+
+	def testSanityWithStrings()
+		x = "3"
+		cx = Paillier.encrypt(@@pub, x)
+		dx = Paillier.decrypt(@@priv, @@pub, cx.to_s)
+		assert_not_equal(x.to_i, cx)
+		assert_equal(x.to_i, dx)
 	end
 
 	def testCryptoAddition()
@@ -73,10 +81,16 @@ class TestPaillier < Test::Unit::TestCase #:nodoc:
 		assert_equal(valid, true)
 	end
 
-	def testKeySerialization()
+	def testPublicKeySerialization()
 		keystring = @@pub.to_s
 		newPubkey = Paillier::PublicKey.from_s(keystring)
 		assert_equal(@@pub.n, newPubkey.n)
 	end
 	
+	def testPrivateKeySerialization()
+		keystring = @@priv.to_s
+		newPrivkey = Paillier::PrivateKey.from_s(keystring)
+		assert_equal(@@priv.l, newPrivkey.l)
+		assert_equal(@@priv.m, newPrivkey.m)
+	end
 end

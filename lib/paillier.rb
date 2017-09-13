@@ -11,8 +11,6 @@ require_relative 'paillier/signatures'
 
 module Paillier
 
-	KeySize = 2048
-
 	def self.gcd(u,v) # :nodoc:
 		while(v > 0)
 			u, v = v, u % v
@@ -123,8 +121,11 @@ module Paillier
 	#
 	# Arguments:
 	#	publicKey: (Paillier::PublicKey)
-	#	plaintext: (Int)
+	#	plaintext: (Int, OpenSSL::BN, String)
 	def self.encrypt(publicKey, plaintext)
+		if( plaintext.is_a?(String) )
+			plaintext = OpenSSL::BN.new(plaintext)
+		end
 		return rEncrypt(publicKey, plaintext)[1]
 	end
 
@@ -136,9 +137,15 @@ module Paillier
 	#
 	# Arguments:
 	#	publicKey: (Paillier::PublicKey)
-	#	a: (Int)
-	#	b: (Int)
+	#	a: (Int, OpenSSL::BN, String)
+	#	b: (Int, OpenSSL::BN, String)
 	def self.eAdd(publicKey, a, b)
+		if( a.is_a?(String) )
+			a = OpenSSL::BN.new(a)
+		end
+		if( b.is_a?(String) )
+			b = OpenSSL::BN.new(b)
+		end
 		return a.to_bn.mod_mul(b, publicKey.n_sq)
 	end
 
@@ -150,9 +157,15 @@ module Paillier
 	#
 	# Arguments:
 	#	publicKey: (Paillier::PublicKey)
-	#	a: (Int)
-	#	b: (Int)
+	#	a: (Int, OpenSSL::BN, String)
+	#	n: (Int, OpenSSL::BN, String)
 	def self.eAddConst(publicKey, a, n)
+		if( a.is_a?(String) )
+			a = OpenSSL::BN.new(a)
+		end
+		if( n.is_a?(String) )
+			n = OpenSSL::BN.new(n)
+		end
 		return a.to_bn.mod_mul(modPow(publicKey.g, n, publicKey.n_sq), publicKey.n_sq)
 	end
 
@@ -164,7 +177,15 @@ module Paillier
 	#
 	# Arguments:
 	#	publicKey: (Paillier::PublicKey)
+	#	a: (Int, OpenSSL::BN, String)
+	#	n: (Int, OpenSSL::BN, String)
 	def self.eMulConst(publicKey, a, n)
+		if( a.is_a?(String) )
+			a = OpenSSL::BN.new(a)
+		end
+		if( n.is_a?(String) )
+			n = OpenSSL::BN.new(n)
+		end
 		return modPow(a, n, publicKey.n_sq)
 	end
 
@@ -177,8 +198,11 @@ module Paillier
 	# Arguments:
 	#	privKey: (Paillier::PrivateKey)
 	#	pubKey: (Paillier::PublicKey)
-	#	ciphertext: (Int)
+	#	ciphertext: (Int, OpenSSL::BN, String)
 	def self.decrypt(privKey, pubKey, ciphertext)
+		if( ciphertext.is_a?(String) )
+			ciphertext = OpenSSL::BN.new(ciphertext)
+		end
 		# We want to run: x = ((cipher ** priv.l) % pub.n_sq) - 1
 		# But the numbers are too big, so we'll use openssl
 		x = ciphertext.to_bn.mod_exp(privKey.l, pubKey.n_sq) - 1
@@ -195,8 +219,11 @@ module Paillier
 	# Arguments:
 	#	priv: (Paillier::PrivateKey)
 	#	pub: (Paillier::PublicKey)
-	#	data: (Int)
+	#	data: (Int, OpenSSL::BN, String)
 	def self.sign(priv, pub, data)
+		if( data.is_a?(String) )
+			data = OpenSSL::BN.new(data)
+		end
 		hashData = hash(data)
 		# L(u) = (u-1)/n
 		numerators1 = ((hashData.to_bn.mod_exp(priv.l, pub.n_sq) - 1) / pub.n.to_bn)[0]
@@ -225,9 +252,12 @@ module Paillier
 	#
 	# Arguments:
 	#	pub: (Paillier::PublicKey)
-	#	message: (Int)
+	#	message: (Int, OpenSSL::BN, String)
 	#	sig: (Paillier::Signature)
 	def self.validSignature?(pub, message, sig)
+		if( message.is_a?(String) )
+			message = OpenSSL::BN.new(message)
+		end
 		hash = Digest::SHA256.hexdigest(message.to_s).to_i(16)
 		# We want to run (g ** s1) * (s2 ** n) % (n**2)
 		# But all those numbers are huge, so we approach it in stages

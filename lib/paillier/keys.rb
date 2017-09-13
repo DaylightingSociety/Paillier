@@ -6,6 +6,31 @@ module Paillier
 			@l = l
 			@m = m
 		end
+
+		# Serialize a private key to string form
+		#
+		# Example:
+		#	>> priv, pub = Paillier.generateKeypair(2048)
+		#	>> priv.to_s
+		#	=> "110107191408889682017277609474037601699496910..."
+		#
+		def to_s
+			return "#{@l},#{@m}"
+		end
+
+		# De-serialize a private key string back into object form
+		#
+		# Example:
+		#	>> s = priv.to_s
+		#	>> newPriv = Paillier::PrivateKey.from_s(s)
+		#	=> #<Paillier::PrivateKey>
+		#
+		# Arguments:
+		#	string (String)
+		def PrivateKey.from_s(string)
+			l,m = string.split(",")
+			return PrivateKey.new(l.to_i, m.to_i)
+		end
 	end
 
 	class PublicKey
