@@ -48,7 +48,7 @@ module Paillier
 
 				# we generate a random value omega such that omega is coprime to n
 				while( true )
-					big_n = BigDecimal.new( @pubkey.n )
+					big_n = BigDecimal( @pubkey.n )
 					@omega = Primes.generateCoprime(BigMath.log(big_n, 2).round, @pubkey.n)
 					if( @omega > 0 and @omega < @pubkey.n)
 						break
@@ -69,7 +69,7 @@ module Paillier
 					unless ( @p == m_k )
 						# randomly generate a coprime of n for z_k
 						while( true )
-							big_n = BigDecimal::new(@pubkey.n)
+							big_n = BigDecimal(@pubkey.n)
 							z_k = Primes::generateCoprime(BigMath.log(big_n, 2).round, @pubkey.n)
 							if( z_k > 0 and z_k < @pubkey.n )
 								break
