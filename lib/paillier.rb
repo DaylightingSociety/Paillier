@@ -98,7 +98,7 @@ module Paillier
 		while( true )
 			# We have to use BigMath here to make sure 'log' doesn't round
 			# to infinity and throw an exception
-			big_n = BigDecimal.new(pub.n)
+			big_n = BigDecimal(pub.n)
 			r = Primes.generateCoprime(BigMath.log(big_n, 2).round, pub.n)
 			if( r > 0 and r < pub.n )
 				break

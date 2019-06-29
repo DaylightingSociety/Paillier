@@ -27,7 +27,7 @@ module Paillier
                 a = 2 + rand(target-4)
                 x = a.to_bn.mod_exp(d, target)
                 next if x == 1 || x == target-1
-                for r in (1..s - 1)
+                (s - 1).times do
                     x = x.to_bn.mod_exp(2, target)
                     return false if x == 1
                     break if x == target - 1
