@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
 	s.name        = 'paillier'
-	s.version     = '1.2.0'
+	s.version     = '1.2.1'
 	s.date        = '2018-11-10'
 	s.summary     = "Paillier Homomorphic Cryptosystem"
 	s.description = "An implementation of Paillier homomorphic addition public key system"

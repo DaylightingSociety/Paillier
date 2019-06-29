@@ -16,4 +16,4 @@ This system is released under the GNU Lesser Public License version 3, included 
 
 ## Attribution
 
-This Paillier cryptosystem is a [Daylighting Society](https://daylightingsociety.org) project. Initial version written by Taylor Dahlin and Milo Trujillo, with contributions from Courtney Tambling. This library was inspired by Mike Ivanov's [Paillier](https://github.com/mikeivanov/paillier) library in Python, and began as a language port of that project before being largely rewritten and expanded upon.
+This Paillier cryptosystem is a [Daylighting Society](https://daylightingsociety.org) project. Initial version written by Taylor Dahlin and Milo Trujillo, with contributions from Courtney Tambling, and additional patches from community contributors. This library was inspired by Mike Ivanov's [Paillier](https://github.com/mikeivanov/paillier) library in Python, and began as a language port of that project before being largely rewritten and expanded upon.
