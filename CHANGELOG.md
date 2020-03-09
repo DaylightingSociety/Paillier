@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [1.2.2] - 9 March 2020
+### Changes
+- Updated some syntax in the code to improve readability. 
+
 ### Added
 - This CHANGELOG.md file, retroactively written to describe past versions.
 
