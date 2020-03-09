@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - This CHANGELOG.md file, retroactively written to describe past versions.
 
+### Fixed
+- NameError: uninitialized constant Paillier::ZKP
+
 ## [1.2.1] - 29 June 2019
 ### Changes
 - Updated README.md to include mention of community contributors.
