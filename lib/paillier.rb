@@ -8,6 +8,7 @@ require 'bigdecimal/math' # For 'log'
 require_relative 'paillier/primes'
 require_relative 'paillier/keys'
 require_relative 'paillier/signatures'
+require_relative 'paillier/zkp'
 
 module Paillier
 
