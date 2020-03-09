@@ -58,8 +58,7 @@ module Paillier
 				# a_p = omega ^ n (mod n^2); 'a' calculation for the plaintext
 				a_p = @omega.to_bn.mod_exp( @pubkey.n, @pubkey.n_sq)
 
-				for k in (0 .. (valid_messages.size - 1)) do
-					m_k = valid_messages[k]
+				valid_messages.each_with_index do |m_k, k|
 					# g_mk = g ^ m_k (mod n^2)
 					g_mk = @pubkey.g.to_bn.mod_exp(m_k.to_bn, @pubkey.n_sq)
 					
@@ -231,21 +230,9 @@ module Paillier
 			#		>> myZKP.commitment.to_s
 			#		=> "<a1>,<a2>,<a3>,<a4>,<a5>,<a6>,;<e1>,<e2>,<e3>,<e4>,<e5>,;<z1>,<z2>,<z3>,<z4>,<z5>,"
 			def to_s()
-				a_s_string = ""
-				e_s_string = ""
-				z_s_string = ""
-				for a in @a_s do
-					a_s_string += a.to_s
-					a_s_string += ","
-				end
-				for e in @e_s do
-					e_s_string += e.to_s
-					e_s_string += ","
-				end
-				for z in @z_s do
-					z_s_string += z.to_s
-					z_s_string += ","
-				end
+				a_s_string = @a_s.join(',')
+				e_s_string = @e_s.join(',')
+				z_s_string = @z_s.join(',')
 				return "#{a_s_string};#{e_s_string};#{z_s_string}"
 			end
 
