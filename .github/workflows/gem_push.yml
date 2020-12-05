@@ -43,5 +43,5 @@ jobs:
 
       - name: Release gem
         run: |
-          echo "Running `rake release`" &&
+          echo "Running rake release" &&
           rake release
