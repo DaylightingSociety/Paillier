@@ -105,7 +105,7 @@ module Paillier
 				for a_k in @a_s do
 					sha256 << a_k.to_s
 				end
-				challenge_string = sha256.digest
+				challenge_string = sha256.digest.unpack('H*')[0].to_i(16)
 
 				# now that we have the "challenge string", we calculate e_p and z_p
 				e_sum = 0.to_bn
@@ -115,7 +115,7 @@ module Paillier
 					e_sum = (e_sum + e_k).to_bn % big_mod
 				end
 				# the sum of all e_s must add up to the challenge_string
-				e_p = (OpenSSL::BN.new(challenge_string.to_i) - e_sum).to_bn % big_mod
+				e_p = (OpenSSL::BN.new(challenge_string) - e_sum).to_bn % big_mod
 				# r_ep = r ^ e_p (mod n)
 				r_ep = @r.to_bn.mod_exp(e_p.to_bn, @pubkey.n)
 				# z_p = omega * r^e_p (mod n)
@@ -174,7 +174,7 @@ module Paillier
 			for a_k in commitment.a_s do
 				sha256 << a_k.to_s
 			end
-			challenge_string = sha256.digest
+			challenge_string = sha256.digest.unpack('H*')[0].to_i(16)
 
 			e_sum = 0.to_bn
 			big_mod = 2.to_bn
@@ -182,8 +182,9 @@ module Paillier
 			for e_k in commitment.e_s do
 				e_sum = (e_sum + e_k.to_bn) % big_mod
 			end
+
 			# first we check that the sum matches correctly
-			unless e_sum == OpenSSL::BN.new(challenge_string.to_i)
+			unless e_sum == OpenSSL::BN.new(challenge_string)
 				return false
 			end
 			# then we check that z_k^n = a_k * (u_k^e_k) (mod n^2)
