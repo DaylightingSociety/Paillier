@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.3] - 5 December 2020
+### Fixed
+- Fixed an error where the challenge string generated in the ZKP module was 0.
 
 ## [1.2.2] - 9 March 2020
 ### Changes
