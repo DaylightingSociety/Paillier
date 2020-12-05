@@ -1,0 +1,23 @@
+name: Release Gem
+
+# Release process only gets run when paillier.gemspec gets changed in master.
+on:
+  push:
+    branches:
+      - 'master'
+    paths:
+      - 'paillier.gemspec'
+
+jobs:
+  release:
+    # https://github.com/marketplace/actions/publish-to-rubygems
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Release Gem
+        uses: cadwallion/publish-rubygems-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RUBYGEMS_API_KEY: ${{ secrets.RUBYGEMS_API_KEY }}
