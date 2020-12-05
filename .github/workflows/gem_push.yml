@@ -14,10 +14,34 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
+      - name: Install ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.6
 
-      - name: Release Gem
-        uses: cadwallion/publish-rubygems-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          RUBYGEMS_API_KEY: ${{ secrets.RUBYGEMS_API_KEY }}
+      - run: set +x
+      - run: mkdir -p ~/.gem
+
+      - name: Generate gem credentials
+        run: |
+          cat << EOF > ~/.gem/credentials
+          ---
+          :github: Bearer ${{ secrets.GITHUB_TOKEN }}
+          :rubygems_api_key: ${{ secrets.RUBYGEMS_API_KEY }}
+          EOF
+
+      - name: Chmod file
+        run: chmod 0600 ~/.gem/credentials
+
+      - run: set -x
+
+      - name: Install dependencies
+        run: |
+          echo "Installing dependencies..." &&
+          bundle install > /dev/null
+
+      - name: Release gem
+        run: |
+          echo "Running `rake release`" &&
+          rake release
